@@ -26,56 +26,51 @@
         <div class="form-group">
             @Html.LabelFor(model => model.au_lname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.au_lname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.au_lname, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="au_lname" name="au_lname" type="text">
+                @*@Html.EditorFor(model => model.au_lname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.au_lname, "", new { @class = "text-danger" })*@
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.au_fname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.au_fname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.au_fname, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="au_fname" name="au_fname" type="text">
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="phone" name="phone" type="text">
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="address" name="address" type="text">
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="city" name="city" type="text">
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="state" name="state" type="text">
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.zip, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.zip, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.zip, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" id="zip" name="zip" type="text">
             </div>
         </div>
 
@@ -83,15 +78,14 @@
             @Html.LabelFor(model => model.contract, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.contract)
-                    @Html.ValidationMessageFor(model => model.contract, "", new { @class = "text-danger" })
+                    <input class="check-box" data-val="true" id="contract" name="contract" type="checkbox">
                 </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="button" id="Create" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -103,4 +97,45 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+        console.log('script~');
+
+        $("#Create").on('click', function () {
+            var au_id = Math.floor(Math.random() * Date.now()).toString(16);
+            var au_lname = $('#au_lname').val();
+            var au_fname = $('#au_fname').val();
+            var phone = $('#phone').val();
+            var address = $('#address').val();
+            var city = $('#city').val();
+            var state = $('#state').val();
+            var zip = $('#zip').val();
+            var contract;
+            if ($('#contract').prop("checked")) { contract = true } else { contract = false };
+            console.log('au_id:' + au_id + ', au_lname:' + au_lname + ', au_fname:' + au_fname + ', phone:' + phone + ', address:' + address
+                + ',city:' + city + ', state:' + state + ', zip:' + zip + ', contract:' + contract);
+
+            $.ajax({
+                type: "Post",
+                url: "CreateAuthor",
+                data: {
+                    au_id: au_id,
+                    au_lname: au_lname,
+                    au_fname: au_fname,
+                    phone: phone,
+                    address: address,
+                    city: city,
+                    state: state,
+                    zip: zip,
+                    contract: contract
+                },
+                dataType: "json",
+                success: function (data) {
+                    return RedirectToAction("Index");
+                },
+                error: function (errMsg) {
+                    alert('錯誤：' + errMsg);
+                }
+            })
+        });
+</script>
 }
