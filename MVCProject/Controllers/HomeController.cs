@@ -15,7 +15,7 @@ namespace MVCProject.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "記錄自己找過的參考資料";
 
             return View();
         }
